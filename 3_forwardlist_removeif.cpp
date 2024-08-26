@@ -17,4 +17,6 @@ int main() {
     };
 
     auto citizens_copy = citizens;
+
+    
 }

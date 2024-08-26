@@ -1,6 +1,7 @@
 #include <array>
 #include <iostream>
 #include <type_traits>
+#include <typeinfo>
 
 template<typename... Args> // template parameter pack : several parameters
 auto build_array(Args&&... args) -> std::array<typename std::common_type<Args...>::type, sizeof...(args)> {
