@@ -75,6 +75,53 @@ class binary {
                 }
             }
         }
+        
+        bool remove(T data) {
+            binary* ptr = _search(data);
+
+            if(ptr==nullptr) {
+                printf("This element doesn't exist\n");
+                return false;
+            }
+
+            if(ptr->right!=nullptr) {
+                binary* temp = ptr->right;
+
+                binary* previous = ptr->right;
+                while(temp->left!=nullptr) {
+                    previous = temp;
+                    temp = previous->left;
+                }
+
+                if(temp->right!=nullptr) {
+                    
+                    // 대체할 포인터의 right노드 처리
+                }
+
+
+            }
+
+            return true;
+        }
+
+    private:
+        binary* _search(T data) {
+            if(data==this->data) {
+                return this;
+            } 
+            else if(data>this->data) {
+                if(this->right!=nullptr) {
+                    (this->right)->_search();
+                }
+                else return nullptr;
+            }
+            else {
+                (this->left!=nullptr) {
+                    (this->left)->_search();
+                }
+                else return nullptr;
+            }
+        }
 };
 
 
