@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stack>
+#include <utility>
 
 using namespace std;
 
@@ -77,26 +78,39 @@ class binary {
         }
         
         bool remove(T data) {
-            binary* ptr = _search(data);
+            pair<binary*, binary*> target = _search(data); 
 
-            if(ptr==nullptr) {
+            binary* cur = target.first(); // 찾는 노드
+            binary* parent = target.second(); // 찾는 노드의 부모 노드
+
+            if(cur==nullptr) {
                 printf("This element doesn't exist\n");
                 return false;
             }
 
-            if(ptr->right!=nullptr) {
-                binary* temp = ptr->right;
-
-                binary* previous = ptr->right;
+            if(cur->right!=nullptr) {
+                binary* temp = cur->right; // 바꿀 노드
+                
+                binary* previous = cur->right;
                 while(temp->left!=nullptr) {
                     previous = temp;
                     temp = previous->left;
                 }
 
                 if(temp->right!=nullptr) {
-                    
+                    previous->left = temp->right; // 교체 노드 자리 채우기
+
+                    parent->
+
+                    temp->right = cur->right;
+                    temp-left = cur->left; // 원래 노드의 링크 교체
+
+                    delete cur; // 노드 삭제
                     // 대체할 포인터의 right노드 처리
-                }
+                } // 오른쪽 트리가 있을 경우
+                else if(temp->left!=nullptr) {
+                    
+                } // 왼쪽 트리만 있을 경우
 
 
             }
@@ -105,21 +119,27 @@ class binary {
         }
 
     private:
-        binary* _search(T data) {
-            if(data==this->data) {
-                return this;
-            } 
-            else if(data>this->data) {
-                if(this->right!=nullptr) {
-                    (this->right)->_search();
+        pair<binary*, binary*> _search(T data) {
+            binary* cur = this;
+            binary* parent = this;
+            while(1) {
+                if(data==cur->data) {
+                    return make_pair(cur, parent);
+                } 
+                else if(data>cur->data) {
+                    if(cur->right!=nullptr) {
+                        parent = cur;
+                        cur = parent->right;
+                    }
+                    else return make_pair(nullptr, nullptr);
                 }
-                else return nullptr;
-            }
-            else {
-                (this->left!=nullptr) {
-                    (this->left)->_search();
-                }
-                else return nullptr;
+                else {
+                    if(cur->left!=nullptr) {
+                        parent = cur;
+                        cur = parent->left;
+                    }
+                    else return make_pair(nullptr, nullptr);
+                }   
             }
         }
 };
