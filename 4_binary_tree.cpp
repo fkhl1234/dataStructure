@@ -80,40 +80,37 @@ class binary {
         bool remove(T data) {
             pair<binary*, binary*> target = _search(data); 
 
-            binary* cur = target.first(); // 찾는 노드
-            binary* parent = target.second(); // 찾는 노드의 부모 노드
+            binary* current = target.first(); // 찾는 노드
+            binary* cur_parent = target.second(); // 찾는 노드의 부모 노드 : a
 
             if(cur==nullptr) {
                 printf("This element doesn't exist\n");
                 return false;
-            }
+            } // 예외 처리
 
-            if(cur->right!=nullptr) {
-                binary* temp = cur->right; // 바꿀 노드
+            if(current->right!=nullptr) {
+                binary* temp = current->right; // 바꿀 노드
                 
-                binary* previous = cur->right;
+                binary* temp_parrent = current->right; // 바꿀 노드의 부모 노드
                 while(temp->left!=nullptr) {
                     previous = temp;
                     temp = previous->left;
-                }
+                } // current 노드의 오른쪽 트리 중 가장 왼쪽에 있는 노드 temp와 그 부모 노드 temp_parrent : b
 
-                if(temp->right!=nullptr) {
-                    previous->left = temp->right; // 교체 노드 자리 채우기
+                temp_parrent->left = temp->right; // temp의 빈 자리 채우기 : c
 
-                    parent->
+                if(cur_parent->data<current->data) {
+                    cur_parent->right = temp; 
+                } // cur_parent<current일 경우 cur_parent의 right에 current 연결
+                else {
+                    cur_parent->left = temp;
+                } // cur_parent>current일 경우 cur_parent의 left에 current 연결 : d
 
-                    temp->right = cur->right;
-                    temp-left = cur->left; // 원래 노드의 링크 교체
+                temp->left = current->left;
+                temp->right = current->right; // current의 링크를 temp의 링크에 각각 연결 : e
 
-                    delete cur; // 노드 삭제
-                    // 대체할 포인터의 right노드 처리
-                } // 오른쪽 트리가 있을 경우
-                else if(temp->left!=nullptr) {
-                    
-                } // 왼쪽 트리만 있을 경우
-
-
-            }
+                delete current;
+            } // 1번 경우
 
             return true;
         }
@@ -123,11 +120,22 @@ class binary {
                 a. 삭제할 노드 current와 그 부모 노드 cur_parent
                 b. 자리를 채울 대체 노드 temp와 그 부모 노트 temp_parent: 오른쪽 트리의 가장 왼쪽에 있는(작은) 노드
                 
-                temp  노드의 빈자리 채우기
-                c. temp의 right에 연결되어 있는 노드를 temp_parent의 left에 연결
+                temp 노드의 빈자리 채우기
+                c. temp의 right에 연결되어 있는 노드를 temp_parent의 left에 연결 : nullptr도 상관 X
 
                 current 노드 대체 작업
-                d. cur_parent의 right 링크에 temp를 연결
+                d. cur_parent의 링크에 temp를 연결 : right인지 left인지 대소 비교를 통해 알아봐야 함
+                e. temp의 right와 left 링크에 current의 right와 left에 연결되어 있는 노드를 연결
+
+            2. 왼쪽 트리만 존재할 경우
+                a. 삭제할 노드 current와 그 부모 노드 cur_parent
+                b. 자리를 채울 대체 노드 temp와 그 부모 노트 temp_parent: 왼쪽 트리의 가장 오른쪽에 있는(큰) 노드
+                
+                temp의 빈자리 채우기
+                c. temp의 left에 연결되어 있는 노드를 temp_parent의 right에 연결 : nullptr도 상관 X
+
+                current 노드의 대체 작업
+                d. cur_parent의 left 링크에 temp를 연결
                 e. temp의 right와 left 링크에 current의 right와 left에 연결되어 있는 노드를 연결
         */
 
