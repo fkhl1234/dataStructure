@@ -117,6 +117,19 @@ class binary {
 
             return true;
         }
+        /*
+            노드 삭제 의사 코드
+            1. 삭제할 노드의 오른쪽 트리가 존재할 경우
+                a. 삭제할 노드 current와 그 부모 노드 cur_parent
+                b. 자리를 채울 대체 노드 temp와 그 부모 노트 temp_parent: 오른쪽 트리의 가장 왼쪽에 있는(작은) 노드
+                
+                temp  노드의 빈자리 채우기
+                c. temp의 right에 연결되어 있는 노드를 temp_parent의 left에 연결
+
+                current 노드 대체 작업
+                d. cur_parent의 right 링크에 temp를 연결
+                e. temp의 right와 left 링크에 current의 right와 left에 연결되어 있는 노드를 연결
+        */
 
     private:
         pair<binary*, binary*> _search(T data) {
