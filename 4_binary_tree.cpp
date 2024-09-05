@@ -68,10 +68,10 @@ class binary {
 
                 printf("%d ", temp->data);
 
-                if(temp->left!=NULL) {
+                if(temp->left!=nullptr) {
                     bfs.push(temp->left);
                 }
-                if(temp->right!=NULL) {
+                if(temp->right!=nullptr) {
                     bfs.push(temp->right);
                 }
             }
@@ -80,24 +80,33 @@ class binary {
         bool remove(T data) {
             pair<binary*, binary*> target = _search(data); 
 
-            binary* current = target.first(); // 찾는 노드
-            binary* cur_parent = target.second(); // 찾는 노드의 부모 노드 : a
+            binary* current = target.first; // 찾는 노드
+            binary* cur_parent = target.second; // 찾는 노드의 부모 노드 : a
 
-            if(cur==nullptr) {
+            if(current==cur_parent) {
+                printf("You can't delete the head node!\n");
+                return false;
+            }
+
+            if(current==nullptr) {
                 printf("This element doesn't exist\n");
                 return false;
             } // 예외 처리
-
+            
             if(current->right!=nullptr) {
                 binary* temp = current->right; // 바꿀 노드
-                
-                binary* temp_parrent = current->right; // 바꿀 노드의 부모 노드
-                while(temp->left!=nullptr) {
-                    previous = temp;
-                    temp = previous->left;
-                } // current 노드의 오른쪽 트리 중 가장 왼쪽에 있는 노드 temp와 그 부모 노드 temp_parrent : b
-
-                temp_parrent->left = temp->right; // temp의 빈 자리 채우기 : c
+                binary* temp_parent = current; // 바꿀 노드의 부모 노드
+                if(temp->left!=nullptr) {
+                    while(temp->left!=nullptr) {
+                        binary* previous = temp;
+                        temp = previous->left;
+                        temp_parent = previous;
+                    } // current 노드의 오른쪽 트리 중 가장 왼쪽에 있는 노드 temp와 그 부모 노드 temp_parrent : b
+                    temp_parent->left = temp->right; // temp의 빈 자리 채우기 : c
+                }
+                else {
+                    temp_parent->right = temp->right;
+                }
 
                 if(cur_parent->data<current->data) {
                     cur_parent->right = temp; 
@@ -111,6 +120,43 @@ class binary {
 
                 delete current;
             } // 1번 경우
+            else if(current->left!=nullptr) {
+                binary* temp = current->left;
+                binary* temp_parent = current;
+                if(temp->right!=nullptr) {
+                    while(temp->right!=nullptr) {
+                        binary* previous = temp;
+                        temp = previous->right;
+                        temp_parent = previous;
+                    }   // current의 왼쪽 트리 중 가장 큰 값 temp와 그 부모 노드 temp_parent : b
+                    temp_parent->right = temp->left; // c
+                } 
+                else {
+                    temp_parent->left = temp->left;
+                }
+
+                if(cur_parent->data<current->data) {
+                    cur_parent->right = temp;
+                }
+                else{
+                    cur_parent->left = temp;
+                } // d
+
+                temp->left = current->left;
+                temp->right = current->right; // e
+
+                delete current;
+            }
+            else {
+                if(cur_parent->data<current->data) {
+                    cur_parent->right = nullptr;
+                    delete current;
+                }
+                else {
+                    cur_parent->left = nullptr;
+                    delete current;
+                }
+            }
 
             return true;
         }
@@ -178,7 +224,14 @@ int main() {
 
     bool check = test.search(3);
 
-    printf("%d\n", check ? 1 : 0);
+    printf("\n%d\n", check ? 1 : 0);
+
+    check = test.remove(2);
+
+    test.BFS();
+
+    test.remove(1);
+    test.BFS();
 
     return 0;
 }
